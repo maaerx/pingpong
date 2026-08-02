@@ -1,2 +1,2 @@
-# pingpong
-simple console pingpong game written in c
+# Pingpong
+Simple console pingpong game written in c
