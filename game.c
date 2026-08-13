@@ -81,7 +81,7 @@ int main() {
     sldLeft.x = 1;
     sldRight.x = WIDTH - 2;
 
-    while(winner == NULL) {
+    while(!winner) {
         if(clock() - deltaBall > 700) {
             if(ball.y == HEIGTH - 2) {
                 ball.vely = -1;
