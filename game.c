@@ -3,6 +3,63 @@
 #include <time.h>
 #include <conio.h>
 
+#ifdef _WIN32
+    #include <conio.h>
+
+    void clearScr(void) {
+        system("cls");
+    }
+
+    void pauseScr(void) {
+        system("pause");
+    }
+    
+#else
+    #include <termios.h>
+    #include <unistd.h>
+    #include <sys/select.h>
+
+    int kbhit(void) {
+        struct timeval tv = {0, 0};
+        fd_set fds;
+
+        FD_ZERO(&fds);
+        FD_SET(STDIN_FILENO, &fds);
+
+        return select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv);
+    }
+
+    int getch(void) {
+        int c;
+
+        struct termios oldt;
+        struct termios newt;
+
+        tcgetattr(STDIN_FILENO, &oldt);
+
+        newt = oldt;
+        newt.c_lflag &= ~(ICANON | ECHO);
+
+        tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+
+        c = getchar();
+
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+
+        return c;
+    }
+
+    void clearScr(void) {
+        printf("\033[2J\033[H");
+    }
+
+    void pauseScr(void) {
+        printf("Press a Key to continue");
+        getchar();
+    }
+
+#endif
+
 #define UPDATE_INTERVALL 200
 #define HEIGTH 10
 #define WIDTH 10
@@ -20,7 +77,7 @@ typedef struct slider {
 } Slider;
 
 void printScreen(char screen[HEIGTH][WIDTH]) {
-    system("cls");
+    clearScr();
 
     for(size_t i = 0; i < HEIGTH; i++) {
         for(size_t j = 0; j < WIDTH; j++) {
@@ -135,10 +192,10 @@ int main() {
         }
     }
 
-    system("cls");
+    clearScr();
 
     printf("Winner is %c\n", winner);
 
-    system("pause");
+    pauseScr();
 }
 
