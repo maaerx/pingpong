@@ -5,6 +5,7 @@
 
 // cross platform
 #ifdef _WIN32
+    /* Windows */
     #include <conio.h>
 
     void clearScr(void) {
@@ -16,6 +17,7 @@
     }
     
 #else
+    /* Linux / POSIX */
     #include <termios.h>
     #include <unistd.h>
     #include <sys/select.h>
