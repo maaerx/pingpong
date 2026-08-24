@@ -3,6 +3,7 @@
 #include <time.h>
 #include <conio.h>
 
+// cross platform
 #ifdef _WIN32
     #include <conio.h>
 
